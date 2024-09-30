@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+     <!-- react algorithm -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+
+    <!-- react dom algorithm -->
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- transpiler -> translator (babels) -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+   
+  </head>
+  <body>
+    <h1>List Function</h1>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const rootElement = document.getElementById("root");
+        function inner(ele) {
+          return <li>{ele}</li>;
+        }
+
+        function ShoppingCart() {
+          const cart = ["Apple", "Oranges", "Brocoli", "Grapes"];
+          // return <ul>{cart.map(inner)}</ul>;  or we can use function here->
+          return <ul>{cart.map((ele,index)=>{
+            return <li key={index}>
+              <div>{ele}</div>
+              <button>Click</button></li>
+          })}</ul>
+        }
+        // apple -> <li>Apple</li>
+
+        // ReactDOM-> 1
+        ReactDOM.render(<ShoppingCart></ShoppingCart>, rootElement);
+    </script>
+  </body>
+</html>

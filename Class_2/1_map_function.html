@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Map Function</h1>
+    <div id="root"></div>
+    <script type="text/babel">
+      /*
+        function inner() {
+            console.log("I am inner")
+        }
+        function outer(innerRef) {
+            console.log("I am outer");
+            innerRef();
+        }
+        outer(inner);
+        */
+      let arr = [10, 20, 30, 40, 50];
+      function cuber(ele) {
+        return ele * ele * ele;
+      }
+      function squarer(ele) {
+        return ele * ele;
+      }
+      //*********** alredy defined map function**********//
+      let cuberArr = arr.map(cuber);
+      let squarerArr = arr.map(squarer);
+      console.log(cuberArr);
+      console.log(squarerArr);
+
+    </script>
+  </body>
+</html>

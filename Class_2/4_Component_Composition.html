@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- react algorithm -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+
+    <!-- react dom algorithm -->
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- transpiler -> translator (babels) -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+ </head>
+  <style>
+    * {
+      text-align: center;
+      margin: 1rem;
+      margin-bottom: 2rem;
+    }
+  </style>
+
+  <body>
+    <h1>State wala component composition</h1>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const rootElement = document.getElementById("root");
+
+      function Counter(props) {
+        // create a state for that
+        const [value, setValue] = React.useState(props.initialValue);
+        /*  jb bhi update -> react 
+                const value = arr[0];
+                the function that is given to you by react
+                const setValue = arr[1];
+            */
+
+        const handleIncrement = () => {
+          if(value==20){
+            return;
+          }
+          setValue(value+1);
+        };
+        const handledecrement = () => {
+          if(value==0){
+            return;
+          }
+          setValue(value-1);
+        };
+        return (
+          <div>
+            <div>{value}</div>
+            <button onClick={handleIncrement}>+ Plus</button>
+            <button onClick={handledecrement}>- Minus</button>
+          </div>
+        );
+      }
+      function CounterParent(){
+        return <div>
+               <Counter initialValue={0} ></Counter> 
+               <Counter initialValue={1} ></Counter>
+               <Counter initialValue={2} ></Counter>
+               <Counter initialValue={3} ></Counter>
+            </div>
+      }
+      ReactDOM.render(<CounterParent></CounterParent>, rootElement);
+    </script>
+  </body>
+</html>

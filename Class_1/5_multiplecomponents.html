@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- react algorithm -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+
+    <!-- react dom algorithm -->
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- transpiler -> translator (babels) -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+</head>
+
+<body>
+    <h1>Props</h1>
+    <div id="root">
+
+    </div>
+    <script type="text/babel">
+        const rootElement = document.getElementById('root');
+
+       // functions that returns -> html
+        function Heading(props){
+            // props example
+            const name = props.name;
+            const age = props.age;
+            return <h1>Hi I am {name} and I am {age} years old:)</h1>
+        }
+        
+        function HeadingParent(){   //multiple calling of heading
+            return (
+            <div>
+                <Heading name={"John"} age={25}/>
+                <Heading name={"Jane"} age={30}></Heading>
+                <Heading name={"Steve"} age={35}></Heading>
+                <Heading name={"Bruce"} age={24}></Heading>
+                <Heading name={"Nirmla"} age={24}></Heading>
+                {/* both are the same */
+                /* <Heading /> */
+                /* <Heading></Heading> */}
+                
+            </div>);
+            }
+            //always start coding  from the ReactDOM.render element
+            ReactDOM.render(<HeadingParent />, rootElement);
+            // headingparent -> we can't write it like in small h.
+    </script>
+</body>
+
+</html>
