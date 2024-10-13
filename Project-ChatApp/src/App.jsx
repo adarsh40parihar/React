@@ -12,7 +12,8 @@ function App() {
 
   return (
     <>
-      <Routes>
+      <Routes> 
+        {/* like switch case in routes */}
         <Route path="/" element={<Home></Home>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/chat/:uniqueID" element={<Chat></Chat>}></Route>
