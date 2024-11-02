@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./Home"
-import Login from  "./Login"
+import Login from "./Login"
+import Chat from "./Chat"
+import ProtectedRoute from './ProtectedRoute';
 /*
 /login -> Login
 / -> Home
 
 */
 function Routing_app() {
-  const [isLoggedIn, setisLoggedIn] = useState(true); // state to check if user is logged in
+  const [isLoggedIn, setisLoggedIn] = useState(false); // state to check if user is logged in
   return (
     <>
       <h1>Routing App</h1>
@@ -20,7 +22,20 @@ function Routing_app() {
             <ProtectedRoute
               isLoggedIn={isLoggedIn}
               setisLoggedIn={setisLoggedIn}
-            ></ProtectedRoute>
+            >
+              <Home setisLoggedIn={setisLoggedIn}></Home>
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/chat/:uniqueID"
+          element={
+            <ProtectedRoute
+              isLoggedIn={isLoggedIn}
+              setisLoggedIn={setisLoggedIn}
+            >
+              <Chat></Chat>
+            </ProtectedRoute>
           }
         ></Route>
         <Route
@@ -32,14 +47,6 @@ function Routing_app() {
   );
 }
 
-function ProtectedRoute(props) {
-  const isLoggedIn = props.isLoggedIn;
-  const setisLoggedIn = props.setisLoggedIn;
-  if (isLoggedIn) {
-    return <Home setisLoggedIn={setisLoggedIn}></Home>;
-  }
-  else return <Navigate to="/login" ></Navigate>
-}
 
 export default Routing_app
 
