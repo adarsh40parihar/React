@@ -1,9 +1,32 @@
 // rfce
 import React from 'react'
 import whatsapplogo from "../Assets/whatsapp.svg"
-import fingerprintlogo from "../Assets/fingerprint.svg";
 import { Fingerprint, LogIn as LoginIcon } from "lucide-react";
-function Login() {
+import { useNavigate } from "react-router-dom";
+//auth import -> Step-3
+import { signInWithPopup } from "firebase/auth";
+import { auth } from "../../firebase";
+import { GoogleAuthProvider } from "firebase/auth";
+
+function Login(props) {
+  const setisLoggedIn = props.setisLoggedIn;
+  const navigate = useNavigate();
+
+  if (props.isLoggedIn) {
+    navigate("/");
+  }
+  
+  const handleLogin = async () => {
+    // login Logic of firebase
+    //auth import -> Step-4
+    const result = await signInWithPopup (auth, new GoogleAuthProvider)
+    console.log(result);
+    // Go to home page.
+    setisLoggedIn(true);
+    console.log("Logged In");
+    navigate("/");
+  }
+
   return (
     <>
       <div className="h-[220px] bg-[#15b491] ">
@@ -26,7 +49,10 @@ function Login() {
             </div>
           </div>
 
-          <button className="bg-[#15b491] text-white p-4  rounded-md flex gap-2 items-center font-[550]">
+          <button
+            onClick={handleLogin}
+            className="bg-[#15b491] text-white p-4  rounded-md flex gap-2 items-center font-[550]"
+          >
             Sign in with Google <LoginIcon />
           </button>
         </div>

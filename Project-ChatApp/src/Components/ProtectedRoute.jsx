@@ -1,6 +1,6 @@
-import React from 'react'
-import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "./Home";
+import React from "react";
+import { Navigate } from "react-router-dom";
+import Home from "./Home"
 
 function ProtectedRoute(props) {
   const isLoggedIn = props.isLoggedIn;
@@ -10,5 +10,4 @@ function ProtectedRoute(props) {
   } else return <Navigate to="/login"></Navigate>;
 }
 
-
-export default ProtectedRoute
+export default ProtectedRoute;
