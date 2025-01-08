@@ -14,18 +14,20 @@ function Login() {
       </div>
 
       <div className="h-[calc(100vh-220px)] bg-[#eff2f5] flex items-center justify-center relative">
-        <div className="bg-white h-[90%] w-[70%] shadow-2xl flex flex-col items-center justify-center gap-4 absolute -top-[93px] rounded">
+        <div className="bg-white h-[100%] w-[55%] shadow-2xl flex flex-col items-center justify-center gap-6 absolute -top-[93px] rounded-xl">
           <Fingerprint
-            className="h-20 w-20 text-primary"
+            className="h-[90px] w-[90px] text-[#449f8c]"
             strokeWidth={1.1}
-            style={{ color: "#15b491" }}
           />
-          <div className="text-xl font-medium">Sign In</div>
-          <div className="text-[#606060]">
-            Sign In with Your Google account to get started.
+          <div className="gap-1 flex flex-col items-center">
+            <div className="text-2xl font-semibold">Sign In</div>
+            <div className="text-[#606060] w-60 text-center text-sm">
+              Sign in with Your Google account to get started.
+            </div>
           </div>
-          <button className="bg-[#15b491] text-white p-4  rounded hover:border-blue-500">
-            Sign in with Google
+
+          <button className="bg-[#15b491] text-white p-4  rounded-md flex gap-2 items-center font-[550]">
+            Sign in with Google <LoginIcon />
           </button>
         </div>
       </div>
