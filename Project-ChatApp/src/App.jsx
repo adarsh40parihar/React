@@ -17,6 +17,7 @@ function App() {
     <>
       <Routes>
         {/* like switch case in routes */}
+        
         <Route
           path="/"
           element={
@@ -28,6 +29,7 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
+
         <Route
           path="/chat/:uniqueID"
           element={
@@ -39,10 +41,12 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
+
         <Route
           path="/login"
           element={<Login setisLoggedIn={setisLoggedIn}></Login>}
         ></Route>
+
         <Route path="*" element={<PageNotFound></PageNotFound>}></Route>
 
       </Routes>
