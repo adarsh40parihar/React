@@ -18,9 +18,9 @@ function ChatPanel() {
     const getUsers = async () => {
         try {
             // isme collection pass and data milta hai
-            const data = await getDocs(collection(db, "users"));
-            const arrayOfUser = data.docs.map((docs) => {
-                return  { userData: docs.data(), id: docs.id }
+            const snapShot = await getDocs(collection(db, "users"));
+            const arrayOfUser = snapShot.docs.map((docs) => {
+              return { userData: docs.data(), id: docs.id };
             });
             setUsers(arrayOfUser); // Set users to state
             setLoading(false); // Set loading to false
