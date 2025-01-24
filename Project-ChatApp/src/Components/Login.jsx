@@ -8,6 +8,7 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, db } from "../../firebase";
 import { GoogleAuthProvider } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { useAuth } from './AuthContext';
 
 async function createUser(authdata) {
   const userObject = authdata.user; 
@@ -24,11 +25,14 @@ async function createUser(authdata) {
 
 }
 
-function Login(props) {
-  const setisLoggedIn = props.setisLoggedIn;
+function Login() {
+
+  const { setUserData , userData:isLoggedIn} = useAuth();
+  
+
   const navigate = useNavigate();
 
-  if (props.isLoggedIn) {
+  if (isLoggedIn) {
     navigate("/");
   }
   
@@ -38,8 +42,18 @@ function Login(props) {
     const userData = await signInWithPopup(auth, new GoogleAuthProvider());
     // console.log(userData);
     await createUser(userData);
+    const userObject = userData.user;
+    const { uid, displayName, photoURL, email } = userObject;
+    
+    //Data of User saved in context
+    setUserData({
+      id: uid,
+      email,
+      name: displayName,
+      profile_pic: photoURL,
+    });
+
     // Go to home page.
-    setisLoggedIn(true);
     console.log("Logged In");
     navigate("/");
   }
