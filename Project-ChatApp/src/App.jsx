@@ -26,11 +26,11 @@ function App() {
         ></Route>
 
         <Route
-          path="/chat/:uniqueID"
+          path="/:chatID"
           element={
             <ProtectedRoute>
-              <Chat></Chat>
-            </ProtectedRoute>
+            <Home></Home>
+             </ProtectedRoute>
           }
         ></Route>
 

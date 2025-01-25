@@ -34,6 +34,7 @@ function Login() {
 
   if (isLoggedIn) {
     navigate("/");
+    return <></>
   }
   
   const handleLogin = async () => {

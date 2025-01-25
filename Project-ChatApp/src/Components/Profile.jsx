@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import ChatPanel from "./ChatPanel";
 
 function Profile(props) {
   const { setUserData, userData } = useAuth();

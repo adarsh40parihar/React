@@ -4,6 +4,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { CircleFadingPlusIcon, Loader2Icon, MessageSquare, SearchIcon, UserRoundIcon, ArrowLeft } from "lucide-react";
 import Profile from "./Profile";
 import { useAuth } from "./AuthContext";
+import UserCard from "./UserCard";
+
 
 function ChatPanel() {
     // lsit of user lana h fire base se
@@ -40,7 +42,7 @@ function ChatPanel() {
     return (
       <>
         {/* top-bar */}
-        <div className="bg-grey-400 py-2 px-4 border-r  flex justify-between items-center gap-2">
+        <div className="bg-gray-400 py-2 px-4 border-r  flex justify-between items-center gap-2">
           <button
             onClick={() => {
               setShowProfile(true);
@@ -60,22 +62,9 @@ function ChatPanel() {
           </div>
         </div>
         {/* chat list */}
-        {isloading ? (
-          <div>Loading...</div>
-        ) : (
+        {isloading ? (<div>Loading...</div>) : (
           <div className="flex flex-col gap-3">
-            {users.map((userObject) => (
-              <div key={userObject.id}>
-                <div className="flex gap-3 border-2">
-                  <img
-                    className="rounded-full h-10 w-10"
-                    src={userObject.userData.profile_pic}
-                    alt=""
-                  />
-                  <h2>{userObject.userData.name}</h2>
-                </div>
-              </div>
-            ))}
+            {users.map((userObject) => (<UserCard key={userObject.id} userObject={userObject} />))}
           </div>
         )}
       </>
