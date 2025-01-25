@@ -1,5 +1,5 @@
 // rfce
-import React from 'react'
+import React,{useEffect} from 'react'
 import whatsapplogo from "../Assets/whatsapp.svg"
 import { Fingerprint, LogIn as LoginIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -32,10 +32,11 @@ function Login() {
 
   const navigate = useNavigate();
 
-  if (isLoggedIn) {
-    navigate("/");
-    return <></>
-  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
   
   const handleLogin = async () => {
     // login Logic of firebase

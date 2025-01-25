@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Login from "./Components/Login";
 import Home from "./Components/Home";
-import Chat from "./Components/Chat";
+import Chat from "./Components/ChatWindow";
 import Profile from "./Components/Profile";
 import PageNotFound from "./Components/PageNotFound";
 /*
@@ -20,7 +20,7 @@ function App() {
           path="/"
           element={
             <ProtectedRoute>
-            <Home></Home>
+              <Home></Home>
             </ProtectedRoute>
           }
         ></Route>
@@ -29,8 +29,8 @@ function App() {
           path="/:chatID"
           element={
             <ProtectedRoute>
-            <Home></Home>
-             </ProtectedRoute>
+              <Home></Home>
+            </ProtectedRoute>
           }
         ></Route>
 
