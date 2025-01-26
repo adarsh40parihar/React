@@ -27,9 +27,7 @@ async function createUser(authdata) {
 
 function Login() {
 
-  const { setUserData , userData:isLoggedIn} = useAuth();
-  
-
+  const {userData:isLoggedIn} = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,32 +42,20 @@ function Login() {
     const userData = await signInWithPopup(auth, new GoogleAuthProvider());
     // console.log(userData);
     await createUser(userData);
-    const userObject = userData.user;
-    const { uid, displayName, photoURL, email } = userObject;
-    
-    //Data of User saved in context
-    setUserData({
-      id: uid,
-      email,
-      name: displayName,
-      profile_pic: photoURL,
-    });
-
-    // Go to home page.
-    console.log("Logged In");
+  // Go to home page.
     navigate("/");
   }
 
   return (
     <>
-      <div className="h-[220px] bg-[#15b491] ">
+      <div className="h-[220px] bg-primary ">
         <div className="flex ml-[200px] pt-[40px] items-center gap-4">
           <img src={whatsapplogo} alt="WhatsApplogo" className="h-8" />
           <div className="text-white font-semibold">WHATSAPP</div>
         </div>
       </div>
 
-      <div className="h-[calc(100vh-220px)] bg-[#eff2f5] flex items-center justify-center relative">
+      <div className="h-[calc(100vh-220px)] bg-background flex items-center justify-center relative">
         <div className="bg-white h-[100%] w-[55%] shadow-2xl flex flex-col items-center justify-center gap-6 absolute -top-[93px] rounded-xl">
           <Fingerprint
             className="h-[90px] w-[90px] text-[#449f8c]"
@@ -84,7 +70,7 @@ function Login() {
 
           <button
             onClick={handleLogin}
-            className="bg-[#15b491] text-white p-4  rounded-md flex gap-2 items-center font-[550]"
+            className="bg-primary text-white p-4  rounded-md flex gap-2 items-center font-[550]"
           >
             Sign in with Google <LoginIcon />
           </button>

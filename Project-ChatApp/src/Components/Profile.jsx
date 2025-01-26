@@ -49,8 +49,8 @@ function Profile(props) {
   // }
 
   return (
-    <div className="bg-white w-[30vw]"> 
-      <div className="bg-green-400 text-white py-4 text-lg px-4 flex items-center gap-6">
+    <div className="bg-white w-[30vw]">
+      <div className="bg-[#15b491] text-white py-4 text-lg px-4 flex items-center gap-6">
         <button onClick={props.onBack}>
           <ArrowLeft />
         </button>
@@ -74,7 +74,7 @@ function Profile(props) {
         <h2>{userData.name}</h2>
         <h2>{userData.email}</h2>
         <button
-          className="bg-[#15b491] text-white p-2 m-2  rounded-md font-[550]"
+          className="bg-primary text-white p-2 m-2  rounded-md font-[500] hover:bg-primaryDense"
           onClick={handleLogout}
         >
           Logout

@@ -6,7 +6,7 @@ function Home(props) {
   return (
     <>
       <main className="w-full h-screen bg-[#E3E1DB]">
-        <div className="bg-[#eff2f5] w-full h-full flex shadow-md">
+        <div className="bg-background w-full h-full flex shadow-md">
           <ChatPanel></ChatPanel>
           <ChatWindow></ChatWindow>
         </div>

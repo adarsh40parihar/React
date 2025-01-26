@@ -14,31 +14,38 @@ export function useAuth() {
 
 function AuthWrapper({ children }) {
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // for cookie step-2
   useEffect(() => {
     //check if user already logged in.
     //kuchh bhi change hoga to yanha updte ho jayega.
-    onAuthStateChanged(auth, async (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setLoading(true);
       if (currentUser) {
         const docRef = doc(db, "users", currentUser?.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          const { uid, displayName, photoURL, email } = docSnap.data();
+          const { uid, name, profile_pic, email } = docSnap.data();
           setUserData({
-            id: uid,
+            id: currentUser.uid,
             email,
-            name: displayName,
-            profile_pic: photoURL,
+            name,
+            profile_pic,
           });
+          console.log("User Data Added")
         }
       }
+      setLoading(false);
     });
+    return () => {
+      unsubscribe();
+    };
   }, []);
     
 
   return (
-    <AuthContext.Provider value={{ setUserData, userData }}>
+    <AuthContext.Provider value={{ setUserData, userData , loading}}>
       {children}
     </AuthContext.Provider>
   );
