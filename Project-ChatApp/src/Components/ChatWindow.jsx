@@ -130,7 +130,7 @@ function ChatWindow() {
         </div>
 
         {/* message list */}
-        <div className="flex-grow flex flex-col gap-8 p-6  overflow-y-scroll scrollbar-always">
+        <div className="flex-grow flex flex-col gap-8 p-6  overflow-y-scroll scrollbar-hidden ">
           {msgList?.map((m, index) => (
             <div
               key={index}

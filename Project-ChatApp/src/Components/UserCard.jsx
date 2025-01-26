@@ -1,21 +1,27 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link, useParams } from "react-router-dom";
 
-function UserCard({ userObject }) {
+function UserCard(props) {
+  const { userObject } = props;
+  const params = useParams();
+  const isActive = params?.chatID === userObject.id;
   return (
     <div key={userObject.id}>
-      <Link to={`/${userObject.id}`}>
-        <div className="flex gap-3 border-2">
-          <img
-            className="rounded-full h-10 w-10"
-            src={userObject.userData.profile_pic}
-            alt=""
-          />
-          <h2>{userObject.userData.name}</h2>
-        </div>
+      <Link
+        className={`flex gap-4 items-center  hover:bg-background p-2 rounded cursor-pointer ${
+          isActive && "bg-background"
+        }`}
+        to={`/${userObject.id}`}
+      >
+        <img
+          className="w-12 h-12 object-cover rounded-full"
+          src={userObject.userData.profile_pic}
+          alt=""
+        />
+        <h2>{userObject.userData.name}</h2>
       </Link>
     </div>
   );
 }
 
-export default UserCard
+export default UserCard;
