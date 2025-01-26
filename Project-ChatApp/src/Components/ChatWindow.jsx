@@ -8,11 +8,11 @@ import { useAuth } from './AuthContext';
 
 function ChatWindow() {
   const params = useParams();
+  const receiverId = params.chatID;
   const { userData } = useAuth();
   
   const [msg, setMsg] = useState("");
   const [secondUser, setSecondUser] = useState();
-  const receiverId = params.chatID;
   const [msgList, setMsgList] = useState([]);
 
   // For creatig a unique chat id between two users.
@@ -112,7 +112,14 @@ function ChatWindow() {
               alt="profile picture"
               className="w-9 h-9 rounded-full object-cover"
             />
-            <h3>{secondUser?.name}</h3>
+            <div>
+              <h3>{secondUser?.name}</h3>
+              {secondUser?.lastSeen && (
+                <p className="text-xs text-neutral-400">
+                  last seen at {secondUser?.lastSeen}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="flex items-end justify-center gap-6 ">

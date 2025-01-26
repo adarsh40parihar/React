@@ -12,14 +12,20 @@ import { useAuth } from './AuthContext';
 
 async function createUser(authdata) {
   const userObject = authdata.user; 
-  const { uid, displayName, photoURL, email } = userObject;
+  const { uid, displayName, photoURL, email, } = userObject;
+  const date = new Date();
+  const timeStamp = date.toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
   //Create a new user in firestore
   await setDoc(doc(db, "users", uid), {
     email,
     name: displayName,
-    profile_pic: photoURL
-
-  })
+    profile_pic: photoURL,
+    lastSeen: timeStamp,
+  });
 
   console.log("User Created");
 
