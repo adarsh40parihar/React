@@ -1,47 +1,86 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { MessageSquareText, PlusIcon, SendIcon ,Phone, Video, EllipsisVertical, } from "lucide-react";
-import { doc, getDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { db } from '../../firebase';
-import { Loader2Icon } from 'lucide-react';
+import { useAuth } from './AuthContext';
 
 
 function ChatWindow() {
   const params = useParams();
-
+  const { userData } = useAuth();
+  
   const [msg, setMsg] = useState("");
   const [secondUser, setSecondUser] = useState();
-  const [secondUserLoading, setSecondUserLoading] = useState(true);
+  const receiverId = params.chatID;
+  const [msgList, setMsgList] = useState([]);
 
-  const recieverId = params.chatID;
-
-  const handleSendMsg = () => {
-    console.log(msg);
+  // For creatig a unique chat id between two users.
+  const chatId =
+    userData?.id > receiverId
+      ? `${userData?.id}-${receiverId}`
+      : `${receiverId}-${userData?.id}`;
+  
+  const handleSendMsg = async () => {
     if (msg === "") return;
-    setMsg("");
-  };
+    const date = new Date();
+    const timeStamp = date.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+      // start chat with user 
+      if (msgList?.length === 0) {
 
+        await setDoc(doc(db, "user-chats", chatId), {
+          chatId: chatId,
+          messages: [
+            {
+              text: msg,
+              time: timeStamp,
+              sender: userData.id,
+              receiver: receiverId,
+            },
+          ],
+        });
+      } else {
+        // update in the message list
+        await updateDoc(doc(db, "user-chats", chatId), {
+          chatId: chatId,
+          // arrayUnion is used here to append to last message to the array list.
+          messages: arrayUnion({
+            text: msg,
+            time: timeStamp,
+            sender: userData.id,
+            receiver: receiverId,
+          }),
+        });
+      }
+      setMsg("");
+
+  };
   //jiske sath chat karna chahte h:
   useEffect(() => {
     const fetchUserData = async () => {
-      const userRef = doc(db, "users", recieverId); // Access 'users' collection with userId
+      const userRef = doc(db, "users", receiverId); // Access 'users' collection with userId
       const userDoc = await getDoc(userRef);
       if (userDoc.exists())
         setSecondUser(userDoc.data());
     };
     fetchUserData();
-    setSecondUserLoading(false);
-  }, [recieverId]);
 
-  if (secondUserLoading)
-    return (
-      <div className="w-screen h-screen flex items-center justify-center bg-background">
-        <Loader2Icon className="w-12 h-12 animate-spin" />
-      </div>
-    );
+    const msgUnsubcribe = onSnapshot(doc(db, "user-chats", chatId), (doc) => {
+      setMsgList(doc.data()?.messages || []);
+    })
 
-  if (!recieverId) {
-    //empty chat window
+    return () => {
+      msgUnsubcribe();
+    }
+
+  }, [receiverId]);
+
+  //empty chat window
+  if (!receiverId) {
     return (
       <section className="w-[70%] h-full flex flex-col gap-4 items-center justify-center">
         <MessageSquareText
@@ -56,7 +95,11 @@ function ChatWindow() {
       </section>
     );
   }
-
+  const messagesEndRef = useRef(null);
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView();
+  }, [msgList]);
+  
   //individual chat window
   return (
     <section className="w-[70%] h-full flex flex-col gap-4 items-center justify-center">
@@ -80,10 +123,19 @@ function ChatWindow() {
         </div>
 
         {/* message list */}
-        <div className="flex-grow flex flex-col gap-8 p-6  overflow-y-scroll ">
-          <div>Message</div>
-          <div>Message</div>
-          <div>Message</div>
+        <div className="flex-grow flex flex-col gap-8 p-6  overflow-y-scroll scrollbar-always">
+          {msgList?.map((m, index) => (
+            <div
+              key={index}
+              data-sender={m.sender === userData.id}
+              // break-words is the edge case where a single word is quite long, so we need to break that word before it breaks our ui.
+              className={`bg-white  w-fit rounded-md p-2 shadow-sm max-w-[400px] break-words data-[sender=true]:ml-auto data-[sender=true]:bg-primary-light `}
+            >
+              <p>{m?.text}</p>
+              <p className="text-xs text-neutral-500  text-end">{m?.time}</p>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
         </div>
 
         {/* chat input */}
@@ -96,6 +148,11 @@ function ChatWindow() {
             value={msg}
             onChange={(e) => {
               setMsg(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSendMsg();
+              }
             }}
           />
           <button onClick={handleSendMsg}>
