@@ -5,15 +5,17 @@ import ChatWindow from "./ChatWindow";
 function Home(props) {
   return (
     <>
-      <main className="w-full h-screen bg-[#E3E1DB]">
-        <div className="bg-background w-full h-full flex shadow-md">
-          <ChatPanel></ChatPanel>
-          <ChatWindow></ChatWindow>
+      <main className=" relative w-full h-screen bg-[#E3E1DB]">
+        <div className="absolute top-0 h-[130px] bg-primary  w-full " />
+        <div className="h-screen absolute w-full p-3 ">
+          <div className="bg-[#eff2f5] w-full h-full shadow-lg flex rounded-xl overflow-hidden ">
+            {/* conditonal rehne waale hai -> chat list , profile */}
+            <ChatPanel />
+            {/* <div>Empty Chat</div>:<div>Individual CHat</div> */}
+            <ChatWindow></ChatWindow>
+          </div>
         </div>
       </main>
-
-      {/* <div>Empty Chat</div>
-        <div>Individual Chat</div> */}
     </>
   );
 }
