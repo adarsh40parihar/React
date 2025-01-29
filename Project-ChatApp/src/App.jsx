@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import React from "react";
+import { Routes, Route} from "react-router-dom";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Login from "./Components/Login";
 import Home from "./Components/Home";
-import Chat from "./Components/ChatWindow";
-import Profile from "./Components/Profile";
 import PageNotFound from "./Components/PageNotFound";
 /*
 /login -> Login

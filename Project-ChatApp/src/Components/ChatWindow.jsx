@@ -5,7 +5,6 @@ import { arrayUnion, doc, getDoc, onSnapshot, setDoc, updateDoc } from "firebase
 import { db } from '../../firebase';
 import { useAuth } from './AuthContext';
 
-
 function ChatWindow() {
   const params = useParams();
   const receiverId = params.chatID;
@@ -14,8 +13,9 @@ function ChatWindow() {
   const [msg, setMsg] = useState("");
   const [secondUser, setSecondUser] = useState();
   const [msgList, setMsgList] = useState([]);
+  const messagesEndRef = useRef(null);
 
-  // For creatig a unique chat id between two users.
+  // For creating a unique chat id between two users.
   const chatId =
     userData?.id > receiverId
       ? `${userData?.id}-${receiverId}`
@@ -29,57 +29,60 @@ function ChatWindow() {
       minute: "numeric",
       hour12: true,
     });
-      // start chat with user 
-      if (msgList?.length === 0) {
-
-        await setDoc(doc(db, "user-chats", chatId), {
-          chatId: chatId,
-          messages: [
-            {
-              text: msg,
-              time: timeStamp,
-              sender: userData.id,
-              receiver: receiverId,
-            },
-          ],
-        });
-      } else {
-        // update in the message list
-        await updateDoc(doc(db, "user-chats", chatId), {
-          chatId: chatId,
-          // arrayUnion is used here to append to last message to the array list.
-          messages: arrayUnion({
+    // start chat with user 
+    if (msgList?.length === 0) {
+      await setDoc(doc(db, "user-chats", chatId), {
+        chatId: chatId,
+        messages: [
+          {
             text: msg,
             time: timeStamp,
             sender: userData.id,
             receiver: receiverId,
-          }),
-        });
-      }
-      setMsg("");
-
+          },
+        ],
+      });
+    } else {
+      // update in the message list
+      await updateDoc(doc(db, "user-chats", chatId), {
+        chatId: chatId,
+        // arrayUnion is used here to append to last message to the array list.
+        messages: arrayUnion({
+          text: msg,
+          time: timeStamp,
+          sender: userData.id,
+          receiver: receiverId,
+        }),
+      });
+    }
+    setMsg("");
   };
-  //jiske sath chat karna chahte h:
+
+  // Fetch user data and messages
   useEffect(() => {
+    if (!receiverId) return;
+
     const fetchUserData = async () => {
       const userRef = doc(db, "users", receiverId); // Access 'users' collection with userId
       const userDoc = await getDoc(userRef);
-      if (userDoc.exists())
-        setSecondUser(userDoc.data());
+      if (userDoc.exists()) setSecondUser(userDoc.data());
     };
     fetchUserData();
 
-    const msgUnsubcribe = onSnapshot(doc(db, "user-chats", chatId), (doc) => {
+    const msgUnsubscribe = onSnapshot(doc(db, "user-chats", chatId), (doc) => {
       setMsgList(doc.data()?.messages || []);
-    })
+    });
 
     return () => {
-      msgUnsubcribe();
-    }
-
+      msgUnsubscribe();
+    };
   }, [receiverId]);
 
-  //empty chat window
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView();
+  }, [msgList]);
+
+  // Empty chat window
   if (!receiverId) {
     return (
       <section className="w-[70%] h-full flex flex-col gap-4 items-center justify-center">
@@ -88,19 +91,15 @@ function ChatWindow() {
           strokeWidth={1.2}
         />
         <p className="text-base text-center text-gray-400">
-          select any contact to
+          Select any contact to
           <br />
           start a chat with.
         </p>
       </section>
     );
   }
-  const messagesEndRef = useRef(null);
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView();
-  }, [msgList]);
-  
-  //individual chat window
+
+  // Individual chat window
   return (
     <section className="w-[70%] h-full flex flex-col gap-4 items-center justify-center">
       <div className="h-full w-full bg-chat-bg flex flex-col">
@@ -116,7 +115,7 @@ function ChatWindow() {
               <h3>{secondUser?.name}</h3>
               {secondUser?.lastSeen && (
                 <p className="text-xs text-neutral-400">
-                  last seen at {secondUser?.lastSeen}
+                  Last seen at {secondUser?.lastSeen}
                 </p>
               )}
             </div>
